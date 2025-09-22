@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贷款对比助手 - 技术支持</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0071e3;
+            --secondary-color: #1d1d1f;
+            --light-gray: #f5f5f7;
+            --medium-gray: #86868b;
+            --dark-gray: #515154;
+            --border-color: #d2d2d7;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--secondary-color);
+            line-height: 1.5;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #2997ff;
+        }
+
+        ul {
+            list-style: none;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 48px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            color: var(--secondary-color);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        p {
+            margin-bottom: 16px;
+            font-size: 17px;
+        }
+
+        /* 全局导航栏 */
+        .global-nav {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .global-nav nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 44px;
+        }
+
+        .logo a {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        /* 主要内容 */
+        main {
+            padding: 40px 0;
+        }
+
+        /* 内容包装器 - 添加网格布局支持侧边导航 */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 40px;
+            position: relative; /* 为固定定位的侧边栏提供参考 */
+        }
+
+        /* 侧边导航 - 修改为固定位置 */
+        .sidebar {
+            position: sticky;
+            top: 64px; /* 导航栏高度 + 一些间距 */
+            height: calc(100vh - 64px); /* 视口高度减去顶部偏移 */
+            overflow-y: auto; /* 内容过多时允许滚动 */
+            padding-right: 20px;
+            padding-bottom: 20px;
+            transition: top 0.3s ease; /* 平滑过渡效果 */
+        }
+
+        .sidebar h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .sidebar ul {
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 12px;
+            padding-left: 0;
+        }
+
+        .sidebar li::before {
+            content: none;
+        }
+
+        .sidebar a {
+            color: var(--dark-gray);
+            font-size: 14px;
+            display: block;
+            padding: 6px 0;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            color: var(--primary-color);
+        }
+
+        .sidebar a.active {
+            font-weight: 500;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 100%;
+        }
+
+        .intro {
+            font-size: 15px;
+            color: var(--dark-gray);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .app-description {
+            margin-bottom: 40px;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        /* FAQ样式 */
+        .faq-item {
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            font-size: 19px;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        /* 联系我们 */
+        .contact {
+            margin: 40px 0;
+        }
+
+        /* 隐私政策 */
+        .privacy {
+            margin-top: 40px;
+        }
+
+        .privacy p strong {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--light-gray);
+            padding: 30px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 12px;
+            color: var(--medium-gray);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static; /* 在小屏幕上取消固定定位 */
+                height: auto;
+                padding-right: 0;
+                margin-bottom: 30px;
+                overflow-y: visible;
+            }
+            
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .sidebar li {
+                margin-bottom: 0;
+            }
+            
+            .sidebar a {
+                padding: 8px 15px;
+                background-color: var(--light-gray);
+                border-radius: 20px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 32px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 全局导航栏 -->
+
+    <main>
+        <div class="container">
+            <h1><img src="https://ti-v.com/wp-content/uploads/2025/03/lenddiff_logo.jpg" alt="贷款对比助手" style="width: 50px; margin-right: 10px; margin-bottom: -8px; ">贷款对比助手</h1>
+            <p class="intro">简单易用的贷款计算与对比工具，帮助您做出明智的财务决策。</p>
+            <div class="container" style="text-align: center; margin-bottom: 20px;">
+                <img src="https://ti-v.com/wp-content/uploads/2025/03/imw_01-1.jpg" alt="贷款对比助手" style="width: 30%; margin-left: 5px; margin-right: 5px;">
+                <img src="https://ti-v.com/wp-content/uploads/2025/03/imw_03.jpg" alt="贷款对比助手" style="width: 30%; margin-left: 5px; margin-right: 5px;">
+                <img src="https://ti-v.com/wp-content/uploads/2025/03/imw_05.jpg" alt="贷款对比助手" style="width: 30%; margin-left: 5px; margin-right: 5px;">
+            </div>
+
+            <div class="content-wrapper">
+                <!-- 侧边导航 -->
+                <aside class="sidebar">
+                    <h3>技术支持</h3>
+                    <ul>
+                        <li><a href="#app-intro" class="active">应用介绍</a></li>
+                        <li><a href="#faq">常见问题</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+                        <li><a href="#privacy">隐私政策</a></li>
+                        <li><a href="#download">下载应用</a></li>
+                    </ul>
+                </aside>
+
+                <!-- 主要内容区域 -->
+                <div class="main-content">
+                    <section id="app-intro" class="app-description content-section">
+                        <h2>应用介绍</h2>
+                        <p>贷款对比助手是一款简单易用的贷款计算工具，帮助您轻松比较不同贷款方案，找出最省钱的选择。无论您是准备购房、购车，还是考虑个人消费贷款，这款应用都能为您提供精确的财务分析和明智的决策支持。</p>
+                        <p>主要功能包括：</p>
+                        <ul>
+                            <li>多方案对比：同时对比等额本金、等额本息和先息后本三种主流贷款方式</li>
+                            <li>精确计算：准确计算每种方案的月供、总利息和总还款额</li>
+                            <li>APR计算：考虑手续费因素，计算实际年化利率(APR)</li>
+                            <li>历史记录：保存计算结果，随时查看和比较</li>
+                        </ul>
+                    </section>
+
+                    <section id="faq" class="faq content-section">
+                        <h2>常见问题解答</h2>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">应用计算的结果准确吗？</div>
+                            <div class="faq-answer">
+                                <p>是的，我们的应用基于标准金融数学模型进行计算，确保结果的准确性。但请注意，实际贷款中可能存在四舍五入或特殊条款，最终以金融机构合同为准。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">如何计算包含手续费的实际年化利率(APR)？</div>
+                            <div class="faq-answer">
+                                <p>我们使用现金流IRR(内部收益率)方法计算APR，这是一种国际通用的计算实际年化利率的方法，考虑了手续费对贷款成本的影响。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">应用需要联网使用吗？</div>
+                            <div class="faq-answer">
+                                <p>核心计算功能不需要联网，可以离线使用。但广告展示和某些非核心功能可能需要网络连接。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">如何保存计算结果？</div>
+                            <div class="faq-answer">
+                                <p>在计算结果页面，点击"保存"按钮，可以添加备注并将结果保存到历史记录中。您可以随时在主界面点击"历史"按钮查看保存的记录。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="contact" class="contact">
+                        <h2>联系我们</h2>
+                        <p>如果您有任何问题、建议或反馈，请通过以下方式联系我们：</p>
+                        <p>📧 电子邮件：<a href="mailto:contact@ti-v.com">contact@ti-v.com</a></p>
+                        <p>我们会尽快回复您的咨询。</p>
+                    </section>
+
+                    <section id="privacy" class="privacy content-section">
+                        <h2>隐私政策</h2>
+                        <p><strong>信息收集与使用</strong></p>
+                        <p>贷款对比助手尊重并保护用户隐私。我们不会收集或存储您的个人财务信息。您在应用中输入的贷款金额、利率等数据仅用于计算，并存储在您的设备本地。</p>
+                        
+                        <p><strong>广告</strong></p>
+                        <p>我们的应用使用Google AdMob展示广告。AdMob可能会收集设备信息和使用数据，以提供个性化广告。您可以通过设备设置调整广告个性化选项。</p>
+                        
+                        <p><strong>数据安全</strong></p>
+                        <p>所有计算和数据存储都在本地设备上进行，不会上传到我们的服务器。这确保了您的财务信息安全。</p>
+                        
+                        <p><strong>第三方服务</strong></p>
+                        <p>我们使用的第三方服务（如广告网络）有自己的隐私政策，我们建议您查阅这些政策以了解他们如何处理您的数据。</p>
+                        
+                        <p><strong>政策更新</strong></p>
+                        <p>我们可能会不时更新隐私政策。任何变更都会在此页面上发布。</p>
+                        
+                        <p>最后更新日期：2025年3月16日</p>
+                    </section>
+
+                    <section id="download" class="download content-section">
+                        <h2>下载应用</h2>
+                        <p>您可以通过以下方式下载应用：</p>
+                       <p>
+                        <a href="https://apps.apple.com/us/app/%E8%B4%B7%E6%AC%BE%E5%AF%B9%E6%AF%94%E5%8A%A9%E6%89%8B/id6743364362" target="_blank">
+                            <img src="https://yohomc.github.io/LendDiff/App_Store_Badge.svg" alt="下载应用" style="width: 150px;">
+                        </a>
+                       </p>
+              
+                      
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 贷款对比助手. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动功能
+        document.querySelectorAll('.sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 移除所有活动类
+                document.querySelectorAll('.sidebar a').forEach(a => {
+                    a.classList.remove('active');
+                });
+                
+                // 添加活动类到当前点击的链接
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop + 500,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 滚动时更新活动链接
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.scrollY - 200;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.sidebar a').forEach(a => {
+                        a.classList.remove('active');
+                        if (a.getAttribute('href') === '#' + sectionId) {
+                            a.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
